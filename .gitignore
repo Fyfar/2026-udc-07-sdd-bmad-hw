@@ -1,0 +1,42 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Builds
+dist
+build
+out
+coverage
+
+# Env / secrets — NEVER commit these.
+# MCP servers often need API keys: reference them as ${ENV_VAR} in the config
+# and keep the real values here, out of git. Commit .env.example instead.
+.env
+.env.local
+.env*.local
+*.pem
+*.key
+
+# Editor / OS
+.DS_Store
+*.local
+.vscode/*
+!.vscode/extensions.json
+!.vscode/mcp.json
+.idea
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Windows Git Bash safety: prevent accidental NUL device files
+nul
+
+# Local agent state — but DO commit .mcp.json (project-scoped MCP config,
+# it is meant to be shared with the team) and .claude/settings.json if you
+# deliberately scope permissions there.
+.claude/*
+!.claude/settings.json

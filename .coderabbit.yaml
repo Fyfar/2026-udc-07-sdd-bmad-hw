@@ -1,0 +1,204 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+#
+# CodeRabbit config — auto-review of UDC Workshop 7 homework PRs.
+# Workshop: "Spec Driven Development (SDD) та BMAD Method".
+#
+# NOTE: every custom_checks `name` MUST stay under 50 characters. If any name
+# hits the limit the WHOLE file fails validation and CodeRabbit silently falls
+# back to default settings — reviews come back in English and no task grading
+# runs at all. Validate against the schema before publishing.
+
+language: "uk-UA"
+tone_instructions: >
+  Ментор воркшопу UDC. Відповідай українською, доброзичливо але вимогливо.
+  Що пропущено — поясни що і чому. Статуси: ✅ зроблено, ⚠️ частково, ❌ пропущено.
+
+early_access: false
+
+reviews:
+  profile: "assertive"
+  request_changes_workflow: false
+  high_level_summary: true
+  high_level_summary_placeholder: "@coderabbitai summary"
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+  changed_files_summary: true
+  sequence_diagrams: false
+
+  auto_review:
+    enabled: true
+    drafts: true
+    auto_incremental_review: true
+    auto_pause_after_reviewed_commits: 0
+    base_branches:
+      - ".*"
+    ignore_title_keywords:
+      - "WIP"
+      - "[skip review]"
+    ignore_usernames:
+      - "dependabot[bot]"
+      - "renovate[bot]"
+      - "github-actions[bot]"
+
+  # ── File filters ──────────────────────────────────────────────
+  path_filters:
+    - "docs/**"
+    - "materials/**"
+    - "app/src/**"
+    - "app/AGENTS.md"
+    - "AGENTS.md"
+    - "CLAUDE.md"
+    - "openspec/**"
+    - "specs/**"
+    - ".specify/**"
+    - "_bmad/**"
+    - ".kiro/**"
+    - "!**/node_modules/**"
+    - "!**/dist/**"
+    - "!**/build/**"
+    - "!**/coverage/**"
+    - "!*.lock"
+    - "!**/package-lock.json"
+    - "!**/yarn.lock"
+
+  # ── Path-specific review instructions ─────────────────────────
+  path_instructions:
+    - path: "docs/spec/**"
+      instructions: |
+        Task A — специфікація. Перевір: є таблиця рішень щодо неоднозначностей
+        із колонкою «чому» (не лише «що»); є ≥8 пронумерованих критеріїв
+        приймання у форматі КОЛИ/ТОДІ з КОНКРЕТНИМИ числами, а не «працює
+        коректно»; серед них є граничні випадки (порожнє замовлення, знижка
+        більша за суму, округлення half-cent). Головний критерій: чи можна за
+        цим документом реалізувати фічу однозначно, не питаючи автора.
+        Незаповнені плейсхолдери <…> — ⚠️.
+
+    - path: "docs/traceability.md"
+      instructions: |
+        Task C — простежуваність. Перевір: таблиця AC → код → тест заповнена без
+        порожніх клітинок, ID критеріїв збігаються зі специфікацією, і — це
+        найважливіше — зроблено ЗВОРОТНУ перевірку (поведінка в коді без AC, AC
+        без тесту, тест без AC). Якщо студент знайшов розбіжність і описав, що з
+        нею зробив, — це СИЛЬНА робота, а не недолік; відзнач це позитивно.
+
+    - path: "docs/ab-validation.md"
+      instructions: |
+        Task D — A/B. Перевір: описані обидва прогони (зі специфікацією і
+        ad-hoc у новому чаті), заповнена таблиця розвилок «що агент вирішив
+        мовчки», є час/ітерації і висновок. ЧЕСНИЙ висновок «для фічі такого
+        розміру вистачило б доброго тікета» — ВАЛІДНИЙ результат, якщо
+        аргументований, і не має знижувати оцінку. Знижує — вигадана різниця
+        або незаповнені плейсхолдери.
+
+    - path: "docs/sdd-tool.md"
+      instructions: |
+        Task B — інструмент. Перевір: вказано, який інструмент обрано, що він
+        згенерував, ЩО ВІН ДАВ понад звичайну markdown-специфікацію і що
+        лишилось робити руками. Переказ README без власних спостережень — ⚠️.
+        Висновок «інструмент майже нічого не додав» приймається, якщо
+        аргументований.
+
+    - path: "docs/task-e-bonus.md"
+      instructions: |
+        Task E (bonus) — один із трьох шляхів (кілька ролей / другий інструмент
+        / власний агент), заповнений повністю з конкретикою. Необовʼязкове;
+        відсутність файлу — не помилка.
+
+    - path: "app/src/**"
+      instructions: |
+        Task C — реалізація. Перевір: рушій знижок реалізовано; тести названі за
+        ID критеріїв приймання, щоб звʼязок зі специфікацією було видно з
+        виводу; покрито граничні випадки. Сигнатури наявних функцій
+        (subtotalCents, shippingCents, tierPercent) і типи в types.ts —
+        захищений контракт, не мали змінитись. Суми — цілі копійки; поява
+        обчислень із плаваючою комою у грошах варта зауваження.
+
+    - path: "materials/**"
+      instructions: |
+        Засіяні матеріали. `feature-request.md` — навмисно неоднозначний тікет,
+        він НЕ мав редагуватись: уся неоднозначність у ньому навмисна і є
+        предметом Task A. Якщо файл змінено — познач як ⚠️.
+
+  # ── Pre-merge checks (grading) ────────────────────────────────
+  pre_merge_checks:
+    title:
+      mode: "warning"
+      requirements: >
+        PR title should follow: "WS7: <participant-name>".
+
+    description:
+      mode: "warning"
+
+    docstrings:
+      mode: "off"
+
+    custom_checks:
+      - mode: "warning"
+        name: "Task A — spec with decisions + 8 AC"
+        instructions: >
+          Static review only — do NOT execute anything. Check
+          docs/spec/pricing-discounts.md exists with a decisions table that has
+          a "why" column, and at least 8 numbered acceptance criteria in a
+          WHEN/THEN shape carrying concrete numbers, including at least two edge
+          cases (empty order, discount exceeding the total, half-cent rounding).
+          PASS if the spec would let a second engineer implement the same
+          behaviour without asking the author; FAIL if it is the raw template,
+          has unfilled placeholders, or its criteria are unverifiable
+          ("works correctly").
+
+      - mode: "warning"
+        name: "Task B — SDD tool artifacts + write-up"
+        instructions: >
+          Static review only. Check the diff commits artifacts from an SDD tool
+          (any of openspec/, specs/, .specify/, _bmad/, .kiro/) AND that
+          docs/sdd-tool.md says which tool was used, what it generated, what it
+          added over a plain markdown spec, and what stayed manual. Tool choice
+          is deliberately free — do not prefer one. A reasoned conclusion that
+          the tool added little is acceptable. FAIL only if no tool artifacts
+          are committed or the write-up merely paraphrases a README.
+
+      - mode: "warning"
+        name: "Task C — traceability incl. reverse check"
+        instructions: >
+          Static review only — do NOT run the test suite. Check
+          docs/traceability.md maps every acceptance criterion to code and to a
+          named test with no empty cells, that AC ids match the spec, and that
+          the REVERSE check is filled in (behaviour in code with no AC, AC with
+          no test, test with no AC). Check tests in app/src are named after AC
+          ids. Finding and documenting a mismatch is a STRONG result — treat it
+          as a positive, not a defect. FAIL if the table is empty, ids do not
+          match, or the reverse check is missing.
+
+      - mode: "warning"
+        name: "Task D — spec vs ad-hoc A/B"
+        instructions: >
+          Static review only. Check docs/ab-validation.md records both runs (with
+          the spec, and ad-hoc in a fresh chat given only the ticket), a
+          per-fork table of what the un-spec'd agent decided silently, effort or
+          iteration counts, and a conclusion. An honest conclusion that a good
+          ticket would have sufficed for a feature this size is a VALID result
+          and must PASS when argued. FAIL for unfilled placeholders, a missing
+          run, or a difference that is asserted without evidence.
+
+      - mode: "warning"
+        name: "Task E — bonus (one path)"
+        instructions: >
+          Optional. If docs/task-e-bonus.md exists, check exactly ONE of the
+          three paths is completed fully with concrete detail and a conclusion.
+          Absence of the file is NOT a failure.
+
+      - mode: "warning"
+        name: "Seeded contract untouched"
+        instructions: >
+          Static review only. Check the diff does not change the signatures of
+          subtotalCents, shippingCents, tierPercent in app/src/pricing.ts, the
+          shapes in app/src/types.ts, or the wording of
+          materials/feature-request.md — all three are the seeded contract. The
+          ambiguity in the ticket is deliberate and is the subject of Task A, so
+          "fixing" it defeats the exercise. Adding new files and new functions
+          is expected and fine. Flag any such change as a warning explaining why
+          it matters.
+
+chat:
+  auto_reply: true
