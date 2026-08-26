@@ -110,7 +110,7 @@ reviews:
         Task C — реалізація. Перевір: рушій знижок реалізовано; тести названі за
         ID критеріїв приймання, щоб звʼязок зі специфікацією було видно з
         виводу; покрито граничні випадки. Сигнатури наявних функцій
-        (subtotalCents, shippingCents, tierPercent) і типи в types.ts —
+        (subtotalKopecks, shippingKopecks, tierPercent) і типи в types.ts —
         захищений контракт, не мали змінитись. Суми — цілі копійки; поява
         обчислень із плаваючою комою у грошах варта зауваження.
 
@@ -192,7 +192,7 @@ reviews:
         name: "Seeded contract untouched"
         instructions: >
           Static review only. Check the diff does not change the signatures of
-          subtotalCents, shippingCents, tierPercent in app/src/pricing.ts, the
+          subtotalKopecks, shippingKopecks, tierPercent in app/src/pricing.ts, the
           shapes in app/src/types.ts, or the wording of
           materials/feature-request.md — all three are the seeded contract. The
           ambiguity in the ticket is deliberate and is the subject of Task A, so

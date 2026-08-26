@@ -35,7 +35,7 @@ Spec Kit і BMAD обидва потребують `uv`.
 | Шлях | Що це |
 |---|---|
 | `app/src/types.ts` | `Order`, `LineItem`, `Coupon` — стабільний контракт, суми в копійках |
-| `app/src/pricing.ts` | `subtotalCents`, `shippingCents`, `tierPercent` — **не змінювати** |
+| `app/src/pricing.ts` | `subtotalKopecks`, `shippingKopecks`, `tierPercent` — **не змінювати** |
 | `materials/feature-request.md` | Навмисно неоднозначний тікет — **не редагувати** |
 | `docs/templates/` | `spec-template.md`, `traceability.md`, `ab-validation.md`, `task-e-bonus.md` |
 

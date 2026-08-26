@@ -1,11 +1,17 @@
 import { describe, it, expect } from "vitest";
-import { lineTotalCents, subtotalCents, shippingCents, tierPercent } from "./pricing.js";
+import {
+  lineTotalKopecks,
+  subtotalKopecks,
+  shippingKopecks,
+  tierPercent,
+} from "./pricing.js";
 import type { Order, LineItem } from "./types.js";
 
+// Amounts are whole kopecks. 25_000 = 250 грн.
 const item = (over: Partial<LineItem> = {}): LineItem => ({
   sku: "AA-1",
   name: "Thing",
-  unitPriceCents: 1000,
+  unitPriceKopecks: 25_000,
   quantity: 1,
   category: "standard",
   ...over,
@@ -20,39 +26,43 @@ const order = (over: Partial<Order> = {}): Order => ({
   ...over,
 });
 
-describe("lineTotalCents", () => {
+describe("lineTotalKopecks", () => {
   it("multiplies unit price by quantity", () => {
-    expect(lineTotalCents(item({ unitPriceCents: 250, quantity: 4 }))).toBe(1000);
+    // 62.50 грн × 4 = 250 грн
+    expect(lineTotalKopecks(item({ unitPriceKopecks: 6_250, quantity: 4 }))).toBe(25_000);
   });
 });
 
-describe("subtotalCents", () => {
+describe("subtotalKopecks", () => {
   it("sums every line", () => {
-    const o = order({ items: [item({ unitPriceCents: 500 }), item({ unitPriceCents: 250, quantity: 2 })] });
-    expect(subtotalCents(o)).toBe(1000);
+    // 500 грн + 2 × 250 грн = 1000 грн
+    const o = order({
+      items: [item({ unitPriceKopecks: 50_000 }), item({ unitPriceKopecks: 25_000, quantity: 2 })],
+    });
+    expect(subtotalKopecks(o)).toBe(100_000);
   });
 
   it("is 0 for an empty order", () => {
-    expect(subtotalCents(order({ items: [] }))).toBe(0);
+    expect(subtotalKopecks(order({ items: [] }))).toBe(0);
   });
 });
 
-describe("shippingCents", () => {
-  it("charges the domestic fee for UA", () => {
-    expect(shippingCents(order({ country: "UA" }))).toBe(4900);
+describe("shippingKopecks", () => {
+  it("charges the domestic fee for UA (49 грн)", () => {
+    expect(shippingKopecks(order({ country: "UA" }))).toBe(4_900);
   });
 
-  it("charges the international fee otherwise", () => {
-    expect(shippingCents(order({ country: "PL" }))).toBe(19900);
+  it("charges the international fee otherwise (199 грн)", () => {
+    expect(shippingKopecks(order({ country: "PL" }))).toBe(19_900);
   });
 
   it("waives shipping when every line is digital", () => {
-    expect(shippingCents(order({ items: [item({ category: "digital" })] }))).toBe(0);
+    expect(shippingKopecks(order({ items: [item({ category: "digital" })] }))).toBe(0);
   });
 
   it("still charges when the order mixes digital and physical", () => {
     const o = order({ items: [item({ category: "digital" }), item({ category: "fresh" })] });
-    expect(shippingCents(o)).toBe(4900);
+    expect(shippingKopecks(o)).toBe(4_900);
   });
 });
 

@@ -36,8 +36,8 @@ a written specification rather than from a ticket.
 
 ## Guardrails
 
-- **Do not change** the signatures of `lineTotalCents`, `subtotalCents`,
-  `shippingCents`, `tierPercent`, or the shapes in `types.ts` — the seeded
+- **Do not change** the signatures of `lineTotalKopecks`, `subtotalKopecks`,
+  `shippingKopecks`, `tierPercent`, or the shapes in `types.ts` — the seeded
   contract depends on them.
 - Rounding, discount stacking order and coupon precedence are **specification
   decisions**. If the code needs one and the spec does not state it, the spec is

@@ -1,11 +1,16 @@
 // Order domain types. Stable contract — the feature you build in this homework
 // extends behaviour, it does not change these shapes.
+//
+// MONEY: stored as whole kopecks (integers), displayed to people in hryvnia.
+// 1 грн = 100 копійок, so 1000 грн is 100_000 kopecks. Integers on purpose —
+// floating-point arithmetic on money is how cents go missing. Rounding rules
+// are a SPECIFICATION decision, not an implementation detail.
 
 export interface LineItem {
   sku: string;
   name: string;
-  /** Unit price in minor units (cents). Integer arithmetic on purpose. */
-  unitPriceCents: number;
+  /** Unit price in whole kopecks. 25_000 = 250 грн. */
+  unitPriceKopecks: number;
   quantity: number;
   /** Product category — some pricing rules care about it. */
   category: "standard" | "fresh" | "digital";
@@ -25,12 +30,12 @@ export interface Order {
 export interface Coupon {
   code: string;
   kind: "percent" | "fixed";
-  /** For percent: 0-100. For fixed: amount in cents. */
+  /** For percent: 0-100. For fixed: an amount in whole kopecks. */
   value: number;
   /** ISO date; the coupon is not valid on or after this instant. */
   expiresAt: string;
   /** If set, the coupon only applies to items of this category. */
   category?: LineItem["category"];
-  /** If set, the order subtotal must reach this before the coupon applies. */
-  minSubtotalCents?: number;
+  /** If set, the order subtotal must reach this (in kopecks) before it applies. */
+  minSubtotalKopecks?: number;
 }

@@ -16,7 +16,7 @@
 | AC | Що перевіряє | Де реалізовано (файл:символ) | Тест (назва) | Статус |
 |---|---|---|---|---|
 | AC-1 | Знижка за рівнем Gold | `discounts.ts:applyTier` | `applies 10% for gold` | ✅ |
-| AC-2 | Прострочений купон | `discounts.ts:isCouponValid` | `ignores an expired coupon` | ✅ |
+| AC-2 | Прострочений промокод | `discounts.ts:isCouponValid` | `ignores an expired coupon` | ✅ |
 | AC-3 | | | | |
 | AC-4 | | | | |
 | … | | | | |

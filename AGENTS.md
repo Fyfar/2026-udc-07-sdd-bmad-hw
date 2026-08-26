@@ -12,7 +12,7 @@ Baseline guidance for an Agentic IDE working in **this homework repo**.
 - `app/` is a small TypeScript **order-pricing domain**. All money is in
   **integer cents** — never introduce floating-point arithmetic for amounts.
   - `app/src/types.ts` — `Order`, `LineItem`, `Coupon`. Stable contract.
-  - `app/src/pricing.ts` — `lineTotalCents`, `subtotalCents`, `shippingCents`,
+  - `app/src/pricing.ts` — `lineTotalKopecks`, `subtotalKopecks`, `shippingKopecks`,
     `tierPercent`. **Protected: do not change these signatures or behaviour.**
   - `cd app && npm install && npm test` is green (8 tests) from the start.
 - **The discount engine does not exist yet** — building it from a spec is the
