@@ -27,7 +27,7 @@
 | `changes/add-discount-engine/specs/discount-engine/spec.md` | 201 | 12 Requirements + 24 Scenarios у форматі `ADDED Requirements` |
 | `changes/add-discount-engine/tasks.md` | 37 | 20 задач у 6 групах, кожна з кроком перевірки |
 
-Разом 486 рядків проти 420 рядків нашої специфікації.
+Разом 486 рядків проти 427 рядків нашої специфікації.
 
 ## 2. Що саме проганялося через цикл
 

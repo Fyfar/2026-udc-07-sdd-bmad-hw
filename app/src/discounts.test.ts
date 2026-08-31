@@ -316,6 +316,36 @@ it("AC-9: порожнє замовлення", () => {
   expect(result.couponDiscountKopecks).toBe(0);
   expect(result.shippingKopecks).toBe(0);
   expect(result.totalKopecks).toBe(0);
+
+  // Coupons on an empty order: a valid one applies at zero, a gated one is rejected
+  const withCoupons = order({
+    items: [],
+    customerTier: "gold",
+    coupons: ["SAVE10", "BIG10"],
+  });
+
+  const catalog: Coupon[] = [
+    coupon({ code: "SAVE10", kind: "percent", value: 10 }),
+    coupon({
+      code: "BIG10",
+      kind: "percent",
+      value: 10,
+      minSubtotalKopecks: 100_000,
+    }),
+  ];
+
+  const now = new Date("2026-08-30T12:00:00.000Z");
+  const couponResult = priceOrder(withCoupons, catalog, now);
+
+  expect(couponResult.appliedCoupon).toEqual({
+    code: "SAVE10",
+    discountKopecks: 0,
+  });
+  expect(couponResult.rejectedCoupons).toEqual([
+    { code: "BIG10", reason: "below-min-subtotal" },
+  ]);
+  expect(couponResult.couponDiscountKopecks).toBe(0);
+  expect(couponResult.totalKopecks).toBe(0);
 });
 
 // AC-10: невідомий код
