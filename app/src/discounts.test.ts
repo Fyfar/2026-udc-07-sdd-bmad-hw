@@ -281,6 +281,24 @@ it("AC-8: пів копійки при округленні", () => {
   expect(Number.isInteger(result.couponDiscountKopecks)).toBe(true);
   expect(Number.isInteger(result.shippingKopecks)).toBe(true);
   expect(Number.isInteger(result.totalKopecks)).toBe(true);
+
+  // Exact boundary: 5 × 10 ÷ 100 = 0.5 — half a kopeck exactly
+  const half = order({
+    items: [item({ unitPriceKopecks: 5, quantity: 1 })],
+    customerTier: "none",
+    coupons: ["P10"],
+  });
+
+  const halfResult = priceOrder(
+    half,
+    [coupon({ code: "P10", kind: "percent", value: 10 })],
+    now
+  );
+
+  // floor(0.5) = 0; rounding to nearest would give 1
+  expect(halfResult.couponDiscountKopecks).toBe(0);
+  expect(halfResult.appliedCoupon).toEqual({ code: "P10", discountKopecks: 0 });
+  expect(halfResult.totalKopecks).toBe(4_905);
 });
 
 // AC-9: порожнє замовлення
